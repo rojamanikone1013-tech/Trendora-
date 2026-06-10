@@ -1,0 +1,107 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>My Cart</title>
+
+<style>
+body{
+    font-family: Arial;
+    padding: 20px;
+}
+
+.cart-item{
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 10px;
+}
+
+button{
+    padding: 5px 10px;
+    margin: 5px;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<h1> My Cart</h1>
+
+<div id="cartContainer"></div>
+
+<h2 id="totalPrice">Total: ₹0</h2>
+
+<script>
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+// fix qty missing
+cart = cart.map(item => ({
+    ...item,
+    qty: item.qty || 1
+}));
+
+function saveCart(){
+    localStorage.setItem("cart", JSON.stringify(cart));
+    renderCart();
+}
+
+function changeQty(index, type){
+    if(type === "inc"){
+        cart[index].qty++;
+    } else {
+        cart[index].qty--;
+        if(cart[index].qty <= 0){
+            cart.splice(index, 1);
+        }
+    }
+    saveCart();
+}
+
+function renderCart(){
+    let container = document.getElementById("cartContainer");
+    container.innerHTML = "";
+
+    let total = 0;
+
+    cart.forEach((item, index) => {
+
+        let itemTotal = (item.price || 0) * (item.qty || 1);
+        total += itemTotal;
+
+        container.innerHTML += `
+            <div class="cart-item" style="display:flex; gap:15px; align-items:center;">
+
+                <!-- IMAGE -->
+                <img src="${item.image}" 
+                     style="width:80px;height:80px;object-fit:cover;border-radius:10px;">
+
+                <!-- DETAILS -->
+                <div>
+                    <h3>${item.name || "Unknown Product"}</h3>
+                    <p>Price: ₹${item.price || 0}</p>
+
+                    <p>
+                        Qty: ${item.qty}
+                        <button onclick="changeQty(${index}, 'inc')">+</button>
+                        <button onclick="changeQty(${index}, 'dec')">-</button>
+                    </p>
+
+                    <p>Subtotal: ₹${itemTotal}</p>
+                </div>
+
+            </div>
+        `;
+    });
+
+    document.getElementById("totalPrice").innerText =
+        "Total: ₹" + total;
+}
+
+renderCart();
+</script>
+
+</body>
+</html>

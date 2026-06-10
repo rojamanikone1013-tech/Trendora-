@@ -1,0 +1,332 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>my Shopping App</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer"></link>
+    <style>
+            body {
+                margin: 0;
+                font-family: Arial;
+            }
+
+            header {
+                background: black;
+                color: white;
+                padding: 15px;
+                /* text-align: center; */
+            }
+
+            footer {
+                background: black;
+                color: white;
+                padding: 0px;
+                text-align: center;
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+            }
+
+            #content {
+                display: flex;
+                gap: 25px;
+                padding: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .card {
+                width: 230px;
+                background: white;
+                border-radius: 15px;
+                padding: 15px;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+                text-align: center;
+                transition: 0.3s;
+          }
+
+            .card img {
+                width: 100%;
+                height: 180px;
+                border-radius: 10px;
+          }
+
+            .card i {
+                color: gray;
+                cursor: pointer;
+                font-size: 20px;
+         }
+
+            .header-icons{
+               display:flex;
+               align-items:center;
+               gap:25px;
+               margin-left:auto;
+       }
+
+            .header-icons i,
+            #modeToggle {
+                font-size: 25px;
+                color: white;
+                cursor: pointer;
+            }
+
+            #modeToggle {
+                background: transparent;
+                border: none;
+                padding: 0;
+            }
+            button {
+                margin: 5px;
+                padding: 8px 12px;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+            }
+
+            button:first-of-type {
+                background: green;
+                color: white;
+            }
+
+            button:last-of-type {
+                background: orange;
+                color: white;
+            }
+            .search-box{
+                position:relative;
+                  width:250px;
+         }
+
+            .search-box i{
+                position: absolute;
+                left: 80%;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #777;
+                z-index: 1;
+            }
+
+            .search-box input{
+                 width: 100%;
+                 padding: 10px 15px 10px 35px; 
+                 border: 1px solid #ddd;
+                 border-radius: 25px;
+                outline: none;
+                font-size: 14px;
+                box-sizing: border-box;
+            }
+             .logo img{
+                 height:100px;
+                 width: 200px;
+                 object-fit:contain;
+            }
+
+            .card{
+                position: relative;
+            }
+
+            .wishlist-icon{
+                 position: absolute;
+                 top: 10px;
+                 right: 10px;
+                 z-index: 10;
+            }
+
+             .wishlist-icon i{
+                color: red;
+                font-size: 22px;
+                cursor: pointer;
+                background: white;
+                padding: 8px;
+                border-radius: 50%;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            }
+            .wishlist-icon i{
+                color: red;
+                font-size: 24px;
+                cursor: pointer;
+            } 
+            .user-box{
+                position: relative;
+                cursor: pointer;
+            }
+
+            .user-menu{
+                 display: none;
+                 position: absolute;
+                 right: 0;
+                 top: 35px;
+                 background: white;
+                 color: black;
+                 width: 140px;
+                 border-radius: 10px;
+                 box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+                 overflow: hidden;
+                 z-index: 1000;
+            }
+
+            .user-menu p{
+                 margin: 0;
+                 padding: 10px;
+                 cursor: pointer;
+                 font-size: 14px;
+             }
+
+            .user-menu p:hover{
+                background: #f1f1f1;
+            }
+
+            .user-menu.show{
+                display: block;
+            }
+           .icons{
+                position: relative;
+                display: inline-block;
+        }
+
+        .user-menu{
+            display:none;
+            position:absolute;
+            top:40px;
+            right:0;
+            width:150px;
+            background:white;
+            color:black;
+            border-radius:10px;
+            box-shadow:0 4px 10px rgba(0,0,0,0.2);
+            z-index:1000;
+        }
+
+        .user-menu.show{
+           display:block;
+
+        }
+
+        .user-menu p{
+            padding:12px;
+            margin:0;
+            cursor:pointer;
+        }
+
+        .user-menu p:hover{
+            background:#f2f2f2;
+        }
+        .icons{
+         position: relative;
+         display: inline-block;
+      }
+        
+        </style>
+    </head>
+    <body>
+        <header style="display:flex; justify-content:space-between; align-items:center;">
+
+    <div class="logo">
+        <img src="./image/trendora-logo.png" alt="Trendora Logo">
+    </div>
+
+    <div class="header-icons">
+
+        <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text"
+                   id="search"
+                   placeholder="Search products..."
+                   onkeyup="searchProducts()">
+        </div>
+
+        <div style="position:relative; cursor:pointer;" onclick="openCart()">
+            <i class="fa-solid fa-cart-arrow-down"></i>
+
+            <span id="cartCount"
+                  style="position:absolute;top:-10px;right:-10px;
+                         background:red;color:white;border-radius:50%;
+                         padding:2px 6px;font-size:12px;">
+                0
+            </span>
+        </div>
+
+        <div style="position:relative; cursor:pointer;" onclick="openWishlist()">
+            <i class="fa-regular fa-heart"></i>
+
+            <span id="wishlistCount"
+                  style="position:absolute;top:-10px;right:-10px;
+                         background:red;color:white;border-radius:50%;
+                         padding:2px 6px;font-size:12px;">
+                0
+            </span>
+        </div>
+
+        <div class="icons">
+            <i class="fa-solid fa-user" onclick="toggleUserMenu(event)"></i>
+
+            <div id="userMenu" class="user-menu">
+                <p onclick="goProfile()">My Profile</p>
+                <p onclick="goOrders()">My Orders</p>
+                <p onclick="logout()">Logout</p>
+            </div>
+        </div>
+
+        <button id="modeToggle" onclick="toggleMode()">🌙</button>
+
+    </div>
+
+</header>
+        
+
+    <section id="content" style="display:flex; gap:20px;"></section>
+
+        <!-- FOOTER -->
+        <footer>
+            <p>© 2026 My Store | All Rights Reserved</p>
+        </footer>
+        <script>
+
+        function toggleMode() {
+
+        let body = document.body;
+        let cards = document.querySelectorAll(".card");
+        let footer = document.querySelector("footer");
+
+        // LIGHT MODE CHECK
+        if (body.style.background === "white") {
+
+            // DARK MODE
+            body.style.background = "#111";
+            body.style.color = "white";
+
+            footer.style.background = "black";
+            footer.style.color = "white";
+
+            cards.forEach(card => {
+                card.style.background = "white";
+                card.style.color = "black";
+            });
+
+        } else {
+
+            // LIGHT MODE
+            body.style.background = "white";
+            body.style.color = "black";
+
+            footer.style.background = "#e2e8f0";
+            footer.style.color = "black";
+
+            cards.forEach(card => {
+                card.style.background = "#f8fafc";
+                card.style.color = "black";
+            });
+
+        }
+    }
+
+
+    </script>
+
+
+    <script src="./script.js"></script>
+    </body>
+    </html>

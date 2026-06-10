@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wishlist</title>
+    <style>
+              .cart-item{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+}
+
+.cart-item img{
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 10px;
+} 
+    </style>
+</head>
+<body>
+    <div id="wishlistItems"></div>
+
+<script>
+
+let wishlist =
+JSON.parse(localStorage.getItem("wishlist")) || [];
+
+let container =
+document.getElementById("wishlistItems");
+
+wishlist.forEach(item => {
+
+    container.innerHTML += `
+        <div class="cart-item">
+            <img src="${item.image}">
+            <div>
+                <h3>${item.name}</h3>
+                <p>₹${item.price}</p>
+            </div>
+        </div>
+    `;
+});
+
+</script>
+</body>
+</html>
